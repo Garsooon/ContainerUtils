@@ -1,22 +1,22 @@
-name: ${project.name}
-description: ${project.description}
-main: org.retromc.templateplugin.TemplatePlugin
-version: ${project.version}
-authors:
-  - JohnyMuffin
-softdepend:
-  - Essentials
+name: ContainerUtils
+version: 1.0.0
+main: org.garsooon.containerutils.ContainerUtils
+api-version: 1.0
+description: Restocks containers with their original items on a timer or command
+author: Garsooon
+website: https://github.com/yourusername/ContainerRestock
 
 commands:
-  testcommand:
-    description: A test command for the plugin.
-    usage: /<command> [args]
-    aliases: [tc]
-    permission: myplugin.testcommand
-    permission-message: You do not have permission to use this command.
+  restock:
+    description: ContainerRestock management commands
+    usage: /restock [list|clear|time|reload]
+    permission: containerutils.admin
+    aliases: [cr, crest]
 
 permissions:
-  myplugin.*:
-    description: Gives access to all myplugin commands.
-    children:
-      myplugin.testcommand: true
+  containerutils.admin:
+    description: Allows access to all ContainerRestock commands
+    default: op
+#  containerutils.use:
+#    description: Allows registering and restocking containers
+#    default: op

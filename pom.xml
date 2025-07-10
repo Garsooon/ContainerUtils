@@ -4,10 +4,10 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>Poseidon-Plugin-Template</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <description>A template for creating plugins for the Poseidon server software.</description>
+    <groupId>org.garsooon</groupId>
+    <artifactId>ContainerUtils</artifactId>
+    <version>1.0.0</version>
+    <description>A plugin to restock the contents of containers</description>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
