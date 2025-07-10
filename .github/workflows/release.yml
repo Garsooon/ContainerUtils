@@ -34,6 +34,13 @@ jobs:
       - name: Build with Maven
         run: mvn clean package
 
+      - name: Verify JAR exists
+        run: |
+          if ! ls target/*.jar 1> /dev/null 2>&1; then
+            echo "No JAR file found in target/. Aborting release."
+            exit 1
+          fi
+
       - name: Create GitHub Release
         if: ${{ !endsWith(env.PROJECT_VERSION, '-SNAPSHOT') }}
         uses: softprops/action-gh-release@v2
@@ -42,4 +49,4 @@ jobs:
           files: |
             target/*.jar
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_RELEASE_TOKEN }}
