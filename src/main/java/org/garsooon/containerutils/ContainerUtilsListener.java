@@ -25,6 +25,24 @@ public class ContainerUtilsListener implements Listener {
         if (block == null || !isContainer(block)) return;
 
         Player player = event.getPlayer();
+        String locationKey = plugin.getLocationKey(block);
+
+        if (plugin.pendingRestockTimes.containsKey(player.getUniqueId())) {
+            int seconds = plugin.pendingRestockTimes.remove(player.getUniqueId());
+
+            if (!plugin.getContainerTemplates().containsKey(locationKey)) {
+                player.sendMessage(ChatColor.RED + "This container is not registered.");
+                return;
+            }
+
+            plugin.containerRestockTimes.put(locationKey, seconds);
+            plugin.containerTimers.put(locationKey, seconds);
+            plugin.saveRestockData();
+
+            player.sendMessage(ChatColor.GREEN + "Restock time for this container set to " + seconds + " seconds.");
+            event.setCancelled(true);
+            return;
+        }
 
         if (!player.hasPermission("containerutils.admin")) {
             player.sendMessage(ChatColor.RED + "You don't have permission to use container utilities.");
@@ -37,8 +55,6 @@ public class ContainerUtilsListener implements Listener {
             return;
         }
 
-        String locationKey = plugin.getLocationKey(block);
-
         if (plugin.createModePlayers.contains(player.getUniqueId())) {
             plugin.createModePlayers.remove(player.getUniqueId());
             plugin.registerContainer(block, player);
@@ -48,7 +64,7 @@ public class ContainerUtilsListener implements Listener {
 
         if (plugin.getContainerTemplates().containsKey(locationKey)) {
             plugin.restockContainer(block, player);
-            event.setCancelled(true); // safe cancel — only on left-click
+            event.setCancelled(true);
         }
     }
 

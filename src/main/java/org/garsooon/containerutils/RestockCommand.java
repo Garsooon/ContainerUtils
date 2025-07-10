@@ -1,6 +1,7 @@
 package org.garsooon.containerutils;
 
 import org.bukkit.ChatColor;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -29,6 +30,7 @@ public class RestockCommand implements CommandExecutor {
             sender.sendMessage(ChatColor.YELLOW + "/restock list - List all registered containers");
             sender.sendMessage(ChatColor.YELLOW + "/restock clear - Clear all registered containers");
             sender.sendMessage(ChatColor.YELLOW + "/restock time <seconds> - Set default restock time");
+            sender.sendMessage(ChatColor.YELLOW + "/restock ctime <seconds> - Set container restock time");
             sender.sendMessage(ChatColor.YELLOW + "/restock reload - Reload config");
             return true;
         }
@@ -63,6 +65,7 @@ public class RestockCommand implements CommandExecutor {
             plugin.containerTemplates.clear();
             plugin.containerTimers.clear();
             sender.sendMessage(ChatColor.GREEN + "All registersed containers cleared!");
+            plugin.clearRegisteredContainers();
             return true;
         }
 
@@ -86,6 +89,33 @@ public class RestockCommand implements CommandExecutor {
                 sender.sendMessage(ChatColor.RED + "Invalid number!");
                 return true;
             }
+        }
+
+        if (args.length >= 1 && args[0].equalsIgnoreCase("ctime")) {
+            if (!(sender instanceof Player)) {
+                sender.sendMessage("[ContainerUtils] Only players can use this command.");
+                return true;
+            }
+
+            Player player = (Player) sender;
+
+            if (args.length != 2) {
+                player.sendMessage(ChatColor.RED + "Usage: /restock ctime <seconds>");
+                return true;
+            }
+
+            int seconds;
+            try {
+                seconds = Integer.parseInt(args[1]);
+                if (seconds < 0) throw new NumberFormatException();
+            } catch (NumberFormatException e) {
+                player.sendMessage(ChatColor.RED + "Invalid time. Must be a non-negative number.");
+                return true;
+            }
+
+            plugin.pendingRestockTimes.put(player.getUniqueId(), seconds);
+            player.sendMessage(ChatColor.YELLOW + "Punch a registered container to set its restock time to " + seconds + " seconds.");
+            return true;
         }
 
         if (args[0].equalsIgnoreCase("reload")) {

@@ -4,12 +4,12 @@ main: org.garsooon.containerutils.ContainerUtils
 api-version: 1.0
 description: Restocks containers with their original items on a timer or command
 author: Garsooon
-website: https://github.com/yourusername/ContainerRestock
+website: https://github.com/Garsooon/ContainerUtils
 
 commands:
   restock:
     description: ContainerRestock management commands
-    usage: /restock [list|clear|time|reload]
+    usage: /restock [create|list|clear|time|ctime|reload]
     permission: containerutils.admin
     aliases: [cr, crest]
 
@@ -17,6 +17,3 @@ permissions:
   containerutils.admin:
     description: Allows access to all ContainerRestock commands
     default: op
-#  containerutils.use:
-#    description: Allows registering and restocking containers
-#    default: op
